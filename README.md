@@ -1,6 +1,6 @@
 # 2da Asignacion TAyDA - Intersección de Rectas
 
-Integrantes:
+Integrantes:  
   Luis Márquez  
   Yeison Rojas
   
