@@ -79,34 +79,43 @@ class Recta:
         ret_String = ("Punto Inicial: " + self.punto_A.to_String() + " Punto Final: " + self.punto_B.to_String())
         return ret_String
 
+#Clase Gestor_Archivo - permite gestionar los archivos para entradas y salidas de datos mediante archivos .txt
+class Gestor_Archivo:
+    nombre_Archivo = "my_file.txt"
+
+    #Constructor
+    #Constructor - Recibe como parametro el nombre del archivo, si no le asigna el nombre "output.txt"
+    def __init__(self, file_name = "output.txt"):
+        self.nombre_Archivo = file_name
+    
+    #Destructor
+    #Destructor - Destructor del objeto archivo
+    def __del__(self):
+        pass
+
+    #Setters
+    #Set_file_name - Establece el nombre del archivo a manejar
+    def set_file_name(self, file_name):
+        self.nombre_Archivo = file_name
+
+    #Getters
+    #Get_file_name - Obtiene el nombre del archivo que se maneja
+    def get_file_name(self):
+        return self.nombre_Archivo
+
+    #Write_result_to_file - Escribe el resultado en el archivo de texto cuyo nombre es nombre_Archivo
+    def write_to_file(self):
+        file = open(self.nombre_Archivo, "w")
+        file.write("Este es mi primer archivo en python")
+        file.close()
+
+
 #FUNCION RUN - SE ESTABLECE LA SECUENCIA DEL PROGRAMA
 def run():
-    punto1 = Punto()
-    punto2 = Punto(10, 20)
-    recta1 = Recta()
-
-    print("Punto 1:\n")
-    print("X = " + str(punto1.get_X()) + " ; Y = " + str(punto1.get_Y()) + "\n")
-
-    print("Punto 2:\n")
-    print("X = " + str(punto2.get_X()) + " ; Y = " + str(punto2.get_Y()) + "\n")
-
-    print("\nCambiando valores a punto 1...\n\n")
-    punto1.set_X(25)
-    punto1.set_Y(60)
-
-    print("Punto 1:\n")
-    print("X = " + str(punto1.get_X()) + " ; Y = " + str(punto1.get_Y()) + "\n")
-
-    print("Punto 2:\n")
-    print("X = " + str(punto2.get_X()) + " ; Y = " + str(punto2.get_Y()) + "\n")
-
-    print("Recta Vacia:\n" + recta1.to_String() + "\n")
-    recta1.set_Punto_A(punto1)
-    recta1.set_Punto_B(punto2)
-    print("Recta Dibujada:\n" + recta1.to_String() + "\n")
-
-
+    myFile = Gestor_Archivo()
+    print("Escribiendo...")
+    myFile.write_to_file()
+    print("Finalizado...")
 
 #FUNCION PRINCIPAL - MAIN FUNCTION
 if __name__ == "__main__":
