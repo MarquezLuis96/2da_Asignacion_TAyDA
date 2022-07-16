@@ -167,9 +167,9 @@ class Gestor_Archivo:
             print(ret_list[index_linea].to_String())
 
     #Write_result_to_file - Escribe el resultado en el archivo de texto cuyo nombre es nombre_Archivo
-    def write_to_file(self):
+    def write_to_file(self, mensaje:str):
         file = open(self.nombre_Archivo, "w")
-        file.write("Output")
+        file.write(mensaje)
         file.close()
 
 
@@ -180,7 +180,7 @@ def run():
     archivo_a_leer.read_from_file()
     print("ecribiendo...")
     archivo_a_escribir = Gestor_Archivo()
-    archivo_a_escribir.write_to_file()
+    archivo_a_escribir.write_to_file("Esta es una linea de prueba")
 
 #FUNCION PRINCIPAL - MAIN FUNCTION
 if __name__ == "__main__":
