@@ -74,6 +74,19 @@ class Recta:
     def get_punto_B(self):
         return self.punto_B
     
+    #get_range - Retorna el rango de la recta (Xa, Xb) en forma de lista (lista de enteros)
+    def get_range(self):
+        #Se crea el objeto rango_recta para retornar el rango de la recta
+        rango_recta:int = []
+        
+        #Se agregan los puntos a la recta
+        rango_recta.append(self.punto_A.get_X())
+        rango_recta.append(self.punto_B.get_X())
+
+        #Retorna el valor
+        return rango_recta
+
+
     #To_String - Retorna el punto inicial y final de la recta como un string
     def to_String(self):
         ret_String = ("Punto Inicial: " + self.punto_A.to_String() + " Punto Final: " + self.punto_B.to_String())
@@ -163,8 +176,11 @@ class Gestor_Archivo:
         file.close()
 
         #Lineas utilizadas para ver los datos cargados en la lista
-        for index_linea in range(0, ret_list.__len__()):
-            print(ret_list[index_linea].to_String())
+        # for index_linea in range(0, ret_list.__len__()):
+        #     print(ret_list[index_linea].to_String())
+
+        #Se retorna la lista
+        return ret_list
 
     #Write_result_to_file - Escribe el resultado en el archivo de texto cuyo nombre es nombre_Archivo
     def write_to_file(self, mensaje:str):
@@ -175,12 +191,29 @@ class Gestor_Archivo:
 
 #FUNCION RUN - SE ESTABLECE LA SECUENCIA DEL PROGRAMA
 def run():
+    lista_de_rectas:Recta = []
+    lista_de_rangos = []
+
     print("leyendo...")
     archivo_a_leer = Gestor_Archivo("datos.txt")
-    archivo_a_leer.read_from_file()
+    lista_de_rectas = archivo_a_leer.read_from_file()
+
     print("ecribiendo...")
     archivo_a_escribir = Gestor_Archivo()
     archivo_a_escribir.write_to_file("Esta es una linea de prueba")
+
+    for i in range(0, lista_de_rectas.__len__()):
+        lista_de_rangos.append(lista_de_rectas[i].get_range())
+    
+    for i in range(0, lista_de_rangos.__len__()):
+        aux:int = 0
+        print("Rango recta " + str(i+1) + ": ")
+
+        aux = lista_de_rangos[i][0]
+        print("XA: " + str(aux))
+
+        aux = lista_de_rangos[i][1]
+        print("XB: " + str(aux))
 
 #FUNCION PRINCIPAL - MAIN FUNCTION
 if __name__ == "__main__":
