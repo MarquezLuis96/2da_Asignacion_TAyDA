@@ -74,8 +74,8 @@ class Recta:
     def get_punto_B(self):
         return self.punto_B
     
-    #get_range - Retorna el rango de la recta (Xa, Xb) en forma de lista (lista de enteros)
-    def get_range(self):
+    #get_dominio - Retorna el dominio de la recta (Xa, Xb) en forma de lista (lista de enteros)
+    def get_dominio(self):
         #Se crea el objeto rango_recta para retornar el rango de la recta
         rango_recta:int = []
         
@@ -192,7 +192,7 @@ class Gestor_Archivo:
 #FUNCION RUN - SE ESTABLECE LA SECUENCIA DEL PROGRAMA
 def run():
     lista_de_rectas:Recta = []
-    lista_de_rangos = []
+    lista_de_dominios = []
 
     print("leyendo...")
     archivo_a_leer = Gestor_Archivo("datos.txt")
@@ -203,16 +203,16 @@ def run():
     archivo_a_escribir.write_to_file("Esta es una linea de prueba")
 
     for i in range(0, lista_de_rectas.__len__()):
-        lista_de_rangos.append(lista_de_rectas[i].get_range())
+        lista_de_dominios.append(lista_de_rectas[i].get_dominio())
     
-    for i in range(0, lista_de_rangos.__len__()):
+    for i in range(0, lista_de_dominios.__len__()):
         aux:int = 0
-        print("Rango recta " + str(i+1) + ": ")
+        print("Dominio recta " + str(i+1) + ": ")
 
-        aux = lista_de_rangos[i][0]
+        aux = lista_de_dominios[i][0]
         print("XA: " + str(aux))
 
-        aux = lista_de_rangos[i][1]
+        aux = lista_de_dominios[i][1]
         print("XB: " + str(aux))
 
 #FUNCION PRINCIPAL - MAIN FUNCTION
