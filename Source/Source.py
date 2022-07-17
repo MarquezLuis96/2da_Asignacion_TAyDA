@@ -188,32 +188,154 @@ class Gestor_Archivo:
         file.write(mensaje)
         file.close()
 
+#Clase Plano - Gestiona el plano X+ e Y+
+class Plano:
+    lista_rectas:Recta = []
+
+    #Constructor
+    #constructor - Constructor de la clase Plano
+    def __init__(self):
+        pass
+
+    #Destructor
+    #Destructor - Destructor de la clase Plano
+    def __del__(self):
+        pass
+
+    #Setters
+    #Set_lista_rectas
+    def set_lista_rectas(self, lista:Recta):
+        self.lista_rectas = lista
+    
+    #Getters
+    #Get_lista_rectas
+    def get_lista_rectas(self):
+        return self.lista_rectas
+    
+    #Agregar_recta - agrega una recta a la lista
+    def agregar_recta(self, recta:Recta):
+        self.lista_rectas.append(recta)
+    
+    #contar_inter_con_x() - Retorna el numero de intersecciones con la coordenada x que reciba
+    def contar_inter_con_x(self, coord_x:int):
+        #Coordenadas
+        #punto(a/b)coordenada(x/y)
+        pacx:int
+        pbcx:int
+
+        #contador de intersecciones
+        contador_inter:int = 0
+        
+        #Con este ciclo selecciono cada una de las rectas para verificar si cortan con x
+        for i in range(0, self.lista_rectas.__len__()):
+            #Se toma el rango de cada recta
+            pacx = self.lista_rectas[i].get_punto_A().get_X()
+            pbcx = self.lista_rectas[i].get_punto_B().get_X()
+
+            #se pregunta si corta con el dominio
+            if(coord_x >= pacx and coord_x <= pbcx):
+                #corta con el dominio de la recta
+                contador_inter += 1
+            else:
+                #no corta con el dominio de la recta
+                pass
+        return contador_inter
+    
+    #coord_x_mayor_n_cortes - Retorna la coordenada x con el mayor numero de cortes
+    #con las rectas pertenecientes al plano
+    def coord_x_mayor_n_cortes(self):
+        #Mayor numero de cortes
+        coord_mas_cortes:int = 0
+        mayor_n_cortes:int = 0
+        for i in range(0, 10):
+            n_cortes_con_i = self.contar_inter_con_x(i)
+            if(mayor_n_cortes < n_cortes_con_i):
+                coord_mas_cortes = i
+                mayor_n_cortes = n_cortes_con_i
+        return coord_mas_cortes
+    
+    #rango_de_x - Retorna el rango (todos los cortes con y) de la linea que realizo los cortes en una lista
+    def rango_de_x(self, coord_x:int):
+        #Coordenadas
+        #punto(a/b)coordenada(x/y)
+        pacx:int
+        pacy:int
+        pbcx:int
+        pbcy:int
+        
+        #Cortes con Y
+        cortes_con_y:int = []
+
+        #Con este ciclo selecciono cada una de las rectas para verificar si cortan con x
+        for i in range(0, self.lista_rectas.__len__()):
+            #Se toma el rango de cada recta
+            pacx = self.lista_rectas[i].get_punto_A().get_X()
+            pbcx = self.lista_rectas[i].get_punto_B().get_X()
+
+            #se pregunta si corta con el dominio
+            if(coord_x >= pacx and coord_x <= pbcx):
+                #corta con el dominio de la recta
+                #Guarda los valores de Y en los auxiliares
+                pacy = self.lista_rectas[i].get_punto_A().get_Y()
+                pbcy = self.lista_rectas[i].get_punto_B().get_Y()
+                #Guarda los valores de Y en la lista
+                cortes_con_y.append(pacy)
+                cortes_con_y.append(pbcy)
+            else:
+                #no corta con el dominio de la recta
+                pass
+
+        #Se ordenan los elementos de la lista en forma ascendente
+        cortes_con_y.sort()
+        return cortes_con_y
+    
+    #obtener_segmento_de_corte - Obtiene el segmento de corte y todas las coordenadas de corte
+    def obtener_segmento_de_corte(self):
+        segmento_de_corte:int = 0
+        lista_cortes_y:int = []
+        n_cortes_y:int = 0
+
+        segmento_de_corte = self.coord_x_mayor_n_cortes()
+        lista_cortes_y = self.rango_de_x(segmento_de_corte)
+        n_cortes_y = lista_cortes_y.__len__()
+
+        print("El segmento de corte es\nX = " + str(segmento_de_corte))
+        print("Ya = " + str(lista_cortes_y[0]))
+        print("Yb = " + str(lista_cortes_y[(n_cortes_y - 1)]))
+        print("Teniendo un total de " + str(n_cortes_y) + "\n")
+        print("Cortes obtenidos:")
+
+        for i in range(0, lista_cortes_y.__len__()):
+            print(str(i+1) + ") x = " + str(segmento_de_corte) + "; y = " + str(lista_cortes_y[i]))
+        
+        #Escribiendo en el archivo output
+        mensaje:str = (str(segmento_de_corte) + " " + str(lista_cortes_y[0]) + " " +
+        str(segmento_de_corte) + " " + str(lista_cortes_y[(n_cortes_y - 1)]))
+
+        data_output:Gestor_Archivo = Gestor_Archivo("output.txt")
+        data_output.write_to_file(mensaje)
 
 #FUNCION RUN - SE ESTABLECE LA SECUENCIA DEL PROGRAMA
 def run():
-    lista_de_rectas:Recta = []
-    lista_de_dominios = []
+    #DECLARACIONES----------------------------------------------
+    #Archivos a manejar
+    data_input:Gestor_Archivo = Gestor_Archivo("datos.txt")
 
-    print("leyendo...")
-    archivo_a_leer = Gestor_Archivo("datos.txt")
-    lista_de_rectas = archivo_a_leer.read_from_file()
+    #lista con las rectas leidas de input
+    lista_rectas_input:Recta = []
 
-    print("ecribiendo...")
-    archivo_a_escribir = Gestor_Archivo()
-    archivo_a_escribir.write_to_file("Esta es una linea de prueba")
+    #Plano X+Y+
+    planoxy:Plano = Plano()
 
-    for i in range(0, lista_de_rectas.__len__()):
-        lista_de_dominios.append(lista_de_rectas[i].get_dominio())
-    
-    for i in range(0, lista_de_dominios.__len__()):
-        aux:int = 0
-        print("Dominio recta " + str(i+1) + ": ")
+    #OPERACIONES----------------------------------------------
+    #Se lee los datos y se transforman en una lista
+    lista_rectas_input = data_input.read_from_file()
 
-        aux = lista_de_dominios[i][0]
-        print("XA: " + str(aux))
+    #Se pasa la lista obtenida al plano x y
+    planoxy.set_lista_rectas(lista_rectas_input)
 
-        aux = lista_de_dominios[i][1]
-        print("XB: " + str(aux))
+    #Obtener el segmento de corte
+    planoxy.obtener_segmento_de_corte()
 
 #FUNCION PRINCIPAL - MAIN FUNCTION
 if __name__ == "__main__":
