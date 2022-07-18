@@ -1,4 +1,10 @@
 #IMPORTANDO LIBRERIAS
+from tkinter import Tk
+from tkinter import ttk
+from tkinter import Entry
+from tkinter import Label
+from tkinter import StringVar
+from tkinter import filedialog
 import matplotlib.pyplot as plt
 
 # CLASE PUNTO - UN PUNTO SE DEFINE COMO LA INTERSECCION DE DOS COORDENADAS X E Y
@@ -374,11 +380,12 @@ class Plano:
         #Mostrando
         plt.show()
 
+
 #FUNCION RUN - SE ESTABLECE LA SECUENCIA DEL PROGRAMA
 def run():
     #DECLARACIONES----------------------------------------------
     #Archivos a manejar
-    data_input:Gestor_Archivo = Gestor_Archivo("datos.txt")
+    data_input:Gestor_Archivo = Gestor_Archivo(ruta)
 
     #lista con las rectas leidas de input
     lista_rectas_input:Recta = []
@@ -399,6 +406,38 @@ def run():
     #Plotear plano
     planoxy.plotear_plano()
 
+# SELECCIONA EL DOCUMENTO
+def abrir():
+    
+    ventana.filename = filedialog.askopenfilename(initialdir = "C:/Users",title = "Elige archivo:", filetypes = (("Ficheros de texto","*.txt"),("Todos los ficheros","*.*")))
+    # VARIBLE DONDE SE ALMACENA LA DIRECCION DEL DOCUMENTO
+    global ruta
+    ruta = ventana.filename
+    direccion.set(ruta)
+    
+    ventana.mainloop()
+
+#Inicia la interfaz para buscar archivo
+def interfaz():
+    
+    global ventana
+    global direccion
+    
+    ventana = Tk()
+    ventana.geometry('375x250')
+    ventana.title("Puntos de Corte - Elegir Documento")
+    
+    
+    bElegir = ttk.Button(ventana, text="Elegir ruta", command=abrir).place(x=10,y=100)
+    
+    direccion = StringVar()
+    Label(text = "Elija el archivo para ingresar los datos", font= ("Times New Roman",12)).place(x=75, y=55)
+    entry = Entry(ventana, textvariable = direccion, state="readonly", width = 40).place(x=100, y=100)
+    
+    Bencontrar = ttk.Button(ventana, text="Encontrar Segmento", command= lambda: run()).place(x=125,y=150)
+    
+    ventana.mainloop()
+
 #FUNCION PRINCIPAL - MAIN FUNCTION
 if __name__ == "__main__":
-    run()
+    interfaz()
