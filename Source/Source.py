@@ -1,3 +1,6 @@
+#IMPORTANDO LIBRERIAS
+import matplotlib.pyplot as plt
+
 # CLASE PUNTO - UN PUNTO SE DEFINE COMO LA INTERSECCION DE DOS COORDENADAS X E Y
 class Punto:
 
@@ -191,6 +194,7 @@ class Gestor_Archivo:
 #Clase Plano - Gestiona el plano X+ e Y+
 class Plano:
     lista_rectas:Recta = []
+    recta_segmento_de_corte:int = []
 
     #Constructor
     #constructor - Constructor de la clase Plano
@@ -305,6 +309,11 @@ class Plano:
         print("Teniendo un total de " + str(n_cortes_y) + "\n")
         print("Cortes obtenidos:")
 
+        #Guardando en el atributo segmento de corte
+        self.recta_segmento_de_corte.append(segmento_de_corte)
+        self.recta_segmento_de_corte.append(lista_cortes_y[0])
+        self.recta_segmento_de_corte.append(lista_cortes_y[n_cortes_y - 1])
+
         for i in range(0, lista_cortes_y.__len__()):
             print(str(i+1) + ") x = " + str(segmento_de_corte) + "; y = " + str(lista_cortes_y[i]))
         
@@ -314,6 +323,56 @@ class Plano:
 
         data_output:Gestor_Archivo = Gestor_Archivo("output.txt")
         data_output.write_to_file(mensaje)
+    
+    #list_coords - Devuelve una lista de enteros con las coordenadas x o y segun reciba el parametro caracter
+    def list_coords(self, coord_to_return:chr):
+        lista_coordenadas:int = []
+        if coord_to_return == 'x' or coord_to_return == 'X':
+            for i in range(0, self.lista_rectas.__len__()):
+                lista_coordenadas.append(self.lista_rectas[i].get_punto_A().get_X())
+                lista_coordenadas.append(self.lista_rectas[i].get_punto_B().get_X())
+        elif coord_to_return == 'y' or coord_to_return == 'Y':
+            for i in range(0, self.lista_rectas.__len__()):
+                lista_coordenadas.append(self.lista_rectas[i].get_punto_A().get_Y())
+                lista_coordenadas.append(self.lista_rectas[i].get_punto_B().get_Y())
+        return lista_coordenadas
+
+    def plotear_plano(self):
+        #Lista de puntos a plotear
+        lista_puntos_x:int = []
+        lista_puntos_y:int = []
+
+        #Puntos auxiliares
+        xs:int = []
+        ys:int = []
+
+        #Llenando las listas de puntos
+        lista_puntos_x = self.list_coords('x')
+        lista_puntos_y = self.list_coords('y')
+
+        #Ploteando los puntos de entrada
+        for i in range(0, lista_puntos_x.__len__(), 2):
+            xs = [lista_puntos_x[i], lista_puntos_x[i+1]]
+            ys = [lista_puntos_y[i], lista_puntos_y[i+1]]
+            plt.plot(xs,ys)
+        
+        #Ploteando la recta segmento de corte
+        xs = [self.recta_segmento_de_corte[0], self.recta_segmento_de_corte[0]]
+        ys = [self.recta_segmento_de_corte[1], self.recta_segmento_de_corte[2]]
+        plt.plot(xs,ys, "ob--", mfc="r", mec="b")
+
+        #Definiendo máximos y mínimos de los ejes
+        max_x:int = max(lista_puntos_x)
+        max_y:int = max(lista_puntos_y)
+        plt.plot(max_x,max_y)
+
+        #Definiendo etiquetas
+        plt.title("Plano")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+
+        #Mostrando
+        plt.show()
 
 #FUNCION RUN - SE ESTABLECE LA SECUENCIA DEL PROGRAMA
 def run():
@@ -336,6 +395,9 @@ def run():
 
     #Obtener el segmento de corte
     planoxy.obtener_segmento_de_corte()
+
+    #Plotear plano
+    planoxy.plotear_plano()
 
 #FUNCION PRINCIPAL - MAIN FUNCTION
 if __name__ == "__main__":
