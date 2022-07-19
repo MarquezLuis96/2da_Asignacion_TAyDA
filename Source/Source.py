@@ -257,7 +257,7 @@ class Plano:
         #Mayor numero de cortes
         coord_mas_cortes:int = 0
         mayor_n_cortes:int = 0
-        for i in range(0, 10):
+        for i in range(0, 1000):
             n_cortes_con_i = self.contar_inter_con_x(i)
             if(mayor_n_cortes < n_cortes_con_i):
                 coord_mas_cortes = i
@@ -312,16 +312,16 @@ class Plano:
         print("El segmento de corte es\nX = " + str(segmento_de_corte))
         print("Ya = " + str(lista_cortes_y[0]))
         print("Yb = " + str(lista_cortes_y[(n_cortes_y - 1)]))
-        print("Teniendo un total de " + str(n_cortes_y) + "\n")
-        print("Cortes obtenidos:")
+        print("Teniendo un total de " + str(n_cortes_y/2) + " cortes obtenidos\n")
+        # print("Cortes obtenidos:")
 
         #Guardando en el atributo segmento de corte
         self.recta_segmento_de_corte.append(segmento_de_corte)
         self.recta_segmento_de_corte.append(lista_cortes_y[0])
         self.recta_segmento_de_corte.append(lista_cortes_y[n_cortes_y - 1])
 
-        for i in range(0, lista_cortes_y.__len__()):
-            print(str(i+1) + ") x = " + str(segmento_de_corte) + "; y = " + str(lista_cortes_y[i]))
+        # for i in range(0, lista_cortes_y.__len__()):
+        #     print(str(i+1) + ") x = " + str(segmento_de_corte) + "; y = " + str(lista_cortes_y[i]))
         
         #Escribiendo en el archivo output
         mensaje:str = (str(segmento_de_corte) + " " + str(lista_cortes_y[0]) + " " +
